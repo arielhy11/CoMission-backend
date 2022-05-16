@@ -13,23 +13,35 @@ namespace Chat_App.Controllers
 {
     public class RatesController : Controller
     {
-        private IRateService service;
+        private readonly IRateService _service;
 
         public RatesController(Chat_AppContext context)
         {
-            service = new RateService();
+            _service = new RateService();
         }
 
         // GET: Rates
         public IActionResult Index()
         {
-              return View(service.GetAll());
+              return View(_service.GetAll());
         }
 
         // GET: Rates/Details/5
-        public IActionResult Details(int id)
+        public IActionResult Details(int? id)
         {
-            return View(service.Get(id));
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var rate = _service.Get((int)id);
+           
+            if (rate == null)
+            {
+                return NotFound();
+            }
+
+            return View(rate);
         }
 
         // GET: Rates/Create
@@ -43,17 +55,30 @@ namespace Chat_App.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(string userName, string description, int value)
+        public IActionResult Create([Bind("Id,UserName,Description,Value")] Rate rate)
         {
-            service.Create(userName, description, value);
-           
-            return RedirectToAction(nameof(Index));
+            if (ModelState.IsValid)
+            {
+                _service.Create(rate.UserName, rate.Description, rate.Value);   
+                return RedirectToAction(nameof(Index));
+            }
+            return View(rate);
         }
 
         // GET: Rates/Edit/5
-        public IActionResult Edit(int id)
+        public IActionResult Edit(int? id)
         {
-            return View(service.Get(id));
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var rate = _service.Get((int)id);
+            if (rate == null)
+            {
+                return NotFound();
+            }
+            return View(rate);
         }
 
         // POST: Rates/Edit/5
@@ -61,18 +86,43 @@ namespace Chat_App.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, string userName, string description, int value)
+        public IActionResult Edit(int id, [Bind("Id,UserName,Description,Value")] Rate rate)
         {
-            service.Edit(id, userName, description, value);
+            if (id != rate.Id)
+            {
+                return NotFound();
+            }
 
-            return RedirectToAction(nameof(Index));
-           
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _service.Edit(id, rate.UserName, rate.Description, rate.Value);
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    throw;
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(rate);
         }
 
         // GET: Rates/Delete/5
-        public IActionResult Delete(int id)
+        public IActionResult Delete(int? id)
         {
-            return View(service.Get(id));
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var rate = _service.Get((int)id);
+            if (rate == null)
+            {
+                return NotFound();
+            }
+
+            return View(rate);
         }
 
         // POST: Rates/Delete/5
@@ -80,7 +130,15 @@ namespace Chat_App.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
-            service.Delete(id);
+            if (_service.Get((int)id) == null)
+            {
+                return Problem("Entity set 'Chat_AppContext.Rate'  is null.");
+            }
+            var rate = _service.Get((int)id);
+            if (rate != null)
+            {
+                _service.Delete(id);
+            }
             return RedirectToAction(nameof(Index));
         }
     }

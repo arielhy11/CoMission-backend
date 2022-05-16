@@ -15,7 +15,11 @@ namespace Chat_App.services
         }
 
         public void Create(string userName, string description, int value) {
-            int nextId = rates.Max(x => x.Id) + 1;
+            int nextId = 0;
+            if (rates.Count > 0)
+            {
+                nextId = rates.Max(x => x.Id) + 1;
+            }
             rates.Add(new Rate { Id = nextId, UserName = userName, Description = description, Value = value });
         }
 
