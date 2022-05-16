@@ -7,40 +7,29 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Chat_App.Data;
 using Chat_App.Models;
+using Chat_App.services;
 
 namespace Chat_App.Controllers
 {
     public class RatesController : Controller
     {
-        private readonly Chat_AppContext _context;
+        private IRateService service;
 
         public RatesController(Chat_AppContext context)
         {
-            _context = context;
+            service = new RateService();
         }
 
         // GET: Rates
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-              return View(await _context.Rate.ToListAsync());
+              return View(service.GetAll());
         }
 
         // GET: Rates/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(int id)
         {
-            if (id == null || _context.Rate == null)
-            {
-                return NotFound();
-            }
-
-            var rate = await _context.Rate
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (rate == null)
-            {
-                return NotFound();
-            }
-
-            return View(rate);
+            return View(service.Get(id));
         }
 
         // GET: Rates/Create
@@ -54,31 +43,17 @@ namespace Chat_App.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,UserName,Description,Value")] Rate rate)
+        public IActionResult Create(string userName, string description, int value)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(rate);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(rate);
+            service.Create(userName, description, value);
+           
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Rates/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int id)
         {
-            if (id == null || _context.Rate == null)
-            {
-                return NotFound();
-            }
-
-            var rate = await _context.Rate.FindAsync(id);
-            if (rate == null)
-            {
-                return NotFound();
-            }
-            return View(rate);
+            return View(service.Get(id));
         }
 
         // POST: Rates/Edit/5
@@ -86,76 +61,27 @@ namespace Chat_App.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,UserName,Description,Value")] Rate rate)
+        public IActionResult Edit(int id, string userName, string description, int value)
         {
-            if (id != rate.Id)
-            {
-                return NotFound();
-            }
+            service.Edit(id, userName, description, value);
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(rate);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!RateExists(rate.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(rate);
+            return RedirectToAction(nameof(Index));
+           
         }
 
         // GET: Rates/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int id)
         {
-            if (id == null || _context.Rate == null)
-            {
-                return NotFound();
-            }
-
-            var rate = await _context.Rate
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (rate == null)
-            {
-                return NotFound();
-            }
-
-            return View(rate);
+            return View(service.Get(id));
         }
 
         // POST: Rates/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int id)
         {
-            if (_context.Rate == null)
-            {
-                return Problem("Entity set 'Chat_AppContext.Rate'  is null.");
-            }
-            var rate = await _context.Rate.FindAsync(id);
-            if (rate != null)
-            {
-                _context.Rate.Remove(rate);
-            }
-            
-            await _context.SaveChangesAsync();
+            service.Delete(id);
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool RateExists(int id)
-        {
-          return _context.Rate.Any(e => e.Id == id);
         }
     }
 }
