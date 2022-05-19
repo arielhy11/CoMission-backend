@@ -32,7 +32,7 @@ namespace Chat_App.services
             {
                 nextId = rates.Max(x => x.Id) + 1;
             }
-            rates.Add(new Rate { Id = nextId, UserName = userName, Description = description, Value = value });
+            rates.Add(new Rate { Id = nextId, UserName = userName, Description = description, Value = value, DateTime = DateTime.Now });
         }
 
         public void Edit(int id, string userName, string description, int value) {
@@ -40,6 +40,7 @@ namespace Chat_App.services
             rate.UserName = userName;
             rate.Description = description;
             rate.Value = value;
+            rate.DateTime = DateTime.Now;
         }
 
         public void Delete(int id) { 

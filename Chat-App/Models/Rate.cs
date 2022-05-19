@@ -14,5 +14,7 @@ namespace Chat_App.Models
         [Range(1, 5)]
         public int Value { get; set; }
 
+        public DateTime DateTime { get; set; }
+
     }
 }
