@@ -5,6 +5,8 @@ namespace Chat_App.services
     public interface IRateService
     {
         public List<Rate> GetAll();
+        
+        public double Average();
 
         public Rate Get(int Id);
 

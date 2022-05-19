@@ -23,6 +23,7 @@ namespace Chat_App.Controllers
         // GET: Rates
         public IActionResult Index()
         {
+              ViewData["Average"] = _service.Average();
               return View(_service.GetAll());
         }
 

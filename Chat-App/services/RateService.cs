@@ -10,6 +10,18 @@ namespace Chat_App.services
             return rates;
         }
 
+        public double Average()
+        {
+            double sum = 0;
+            foreach (Rate rate in rates)
+            {
+                sum += rate.Value;
+            }
+            if(sum > 0)
+            return sum / rates.Count;
+            return 0;
+        }
+
         public Rate Get(int Id) { 
             return rates.Find(x => x.Id == Id);
         }
