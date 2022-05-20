@@ -2,7 +2,7 @@
 
 namespace Chat_App.services
 {
-    public class ContactService
+    public class ContactService : IContactService
     {
         private static List<Contact> contacts = new List<Contact>();
 

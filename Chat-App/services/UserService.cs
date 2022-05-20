@@ -2,7 +2,7 @@
 
 namespace Chat_App.services
 {
-    public class UserService
+    public class UserService : IUserService
     {
         private static List<User> users = new List<User>();
         public List<User> GetAll() {

@@ -8,6 +8,6 @@
 
         public string Password { get; set; }
 
-        public ICollection<Contact> Contacts { get; set; }
+        public List<Contact> Contacts { get; set; }
     }
 }

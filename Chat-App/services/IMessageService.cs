@@ -10,7 +10,7 @@ namespace Chat_App.services
 
         //public Message Search();
 
-        public void Create(string content, DateTime created, string status, string contact);
+        public void Create(string content, DateTime created, string status, Contact contact);
         
         // maybe neccesery
         //public void Edit(int id, string content, DateTime created, string status, string contact);

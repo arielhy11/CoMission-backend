@@ -2,7 +2,7 @@
 
 namespace Chat_App.services
 {
-    public class MessageService
+    public class MessageService : IMessageService
     {
         private static List<Message> messages = new List<Message>();
         public List<Message> GetAll()
