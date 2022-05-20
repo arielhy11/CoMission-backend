@@ -15,5 +15,11 @@ namespace Chat_App.Data
         }
 
         public DbSet<Chat_App.Models.Rate>? Rate { get; set; }
+
+        public DbSet<Chat_App.Models.User> User { get; set; }
+
+        public DbSet<Chat_App.Models.Message> Message { get; set; }
+
+        public DbSet<Chat_App.Models.Contact> Contact { get; set; }
     }
 }
