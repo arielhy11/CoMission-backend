@@ -27,6 +27,26 @@ namespace Chat_App.Controllers
               return View(_service.GetAll());
         }
 
+        // GET: Rates
+        public IActionResult Search()
+        {
+            ViewData["Average"] = _service.Average();
+            return View(_service.GetAll());
+        }
+
+        // POST: Rates
+        [HttpPost]
+
+        public IActionResult Search(string query)
+        {
+            var q = from rate in _service.GetAll()
+                    where rate.UserName.Contains(query)
+                    select rate;
+
+            ViewData["Average"] = _service.Average();
+            return View(q.ToList());
+        }
+
         // GET: Rates/Details/5
         public IActionResult Details(int? id)
         {
@@ -61,7 +81,7 @@ namespace Chat_App.Controllers
             if (ModelState.IsValid)
             {
                 _service.Create(rate.UserName, rate.Description, rate.Value);   
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Search));
             }
             return View(rate);
         }
@@ -104,7 +124,7 @@ namespace Chat_App.Controllers
                 {
                     throw;
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Search));
             }
             return View(rate);
         }
@@ -140,7 +160,7 @@ namespace Chat_App.Controllers
             {
                 _service.Delete(id);
             }
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Search));
         }
     }
 }
