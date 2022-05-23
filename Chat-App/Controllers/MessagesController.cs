@@ -7,34 +7,35 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Chat_App.Data;
 using Chat_App.Models;
+using Chat_App.services;
 
 namespace Chat_App.Controllers
 {
     public class MessagesController : Controller
     {
-        private readonly Chat_AppContext _context;
+        private readonly IMessageService _service;
 
         public MessagesController(Chat_AppContext context)
         {
-            _context = context;
+            _service = new MessageService();
         }
 
-        // GET: Messages
-        public async Task<IActionResult> Index()
+        // GET: Users
+        public IActionResult Index()
         {
-              return View(await _context.Message.ToListAsync());
+            return View(_service.GetAll());
         }
 
-        // GET: Messages/Details/5
-        public async Task<IActionResult> Details(int? id)
+        // GET: Users/Details/5
+        public IActionResult Details(int? id)
         {
-            if (id == null || _context.Message == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var message = await _context.Message
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var message = _service.Get((int)id);
+
             if (message == null)
             {
                 return NotFound();
@@ -43,89 +44,37 @@ namespace Chat_App.Controllers
             return View(message);
         }
 
-        // GET: Messages/Create
+        // GET: Users/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Messages/Create
+        // POST: Users/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Content,CreatedDate,Status")] Message message)
+        public IActionResult Create([Bind("Id,Content,CreatedDate,Status,Contact")] Message message)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(message);
-                await _context.SaveChangesAsync();
+                _service.Create(message.Content, message.CreatedDate, message.Status, message.Contact);
                 return RedirectToAction(nameof(Index));
             }
             return View(message);
         }
 
-        // GET: Messages/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        // GET: Users/Delete/5
+        public IActionResult Delete(int? id)
         {
-            if (id == null || _context.Message == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var message = await _context.Message.FindAsync(id);
-            if (message == null)
-            {
-                return NotFound();
-            }
-            return View(message);
-        }
+            var message = _service.Get((int)id);
 
-        // POST: Messages/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Content,CreatedDate,Status")] Message message)
-        {
-            if (id != message.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(message);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!MessageExists(message.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(message);
-        }
-
-        // GET: Messages/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null || _context.Message == null)
-            {
-                return NotFound();
-            }
-
-            var message = await _context.Message
-                .FirstOrDefaultAsync(m => m.Id == id);
             if (message == null)
             {
                 return NotFound();
@@ -134,28 +83,22 @@ namespace Chat_App.Controllers
             return View(message);
         }
 
-        // POST: Messages/Delete/5
+        // POST: Users/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int id)
         {
-            if (_context.Message == null)
+            if (_service.Get((int)id) == null)
             {
-                return Problem("Entity set 'Chat_AppContext.Message'  is null.");
+                return Problem("Entity set 'Chat_AppContext.User'  is null.");
             }
-            var message = await _context.Message.FindAsync(id);
-            if (message != null)
+            var user = _service.Get((int)id);
+            if (user != null)
             {
-                _context.Message.Remove(message);
+                _service.Delete(id);
             }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
 
-        private bool MessageExists(int id)
-        {
-          return _context.Message.Any(e => e.Id == id);
+            return RedirectToAction(nameof(Index));
         }
     }
 }
