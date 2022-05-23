@@ -8,7 +8,7 @@
 
         public string NickName { get; set; }
 
-        public ICollection<Message> Messages { get; set; }
+        public List<Message> Messages { get; set; }
 
         public User User { get; set; }
     }
