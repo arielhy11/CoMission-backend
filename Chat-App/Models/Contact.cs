@@ -1,4 +1,6 @@
-﻿namespace Chat_App.Models
+﻿using System.Text.Json.Serialization;
+
+namespace Chat_App.Models
 {
     public class Contact
     {
@@ -12,8 +14,10 @@
 
         public DateTime LastDate { get; set; }
 
+        [JsonIgnore]
         public List<Message> Messages { get; set; }
 
-        //public User User { get; set; }
+        [JsonIgnore]
+        public User User { get; set; }
     }
 }
