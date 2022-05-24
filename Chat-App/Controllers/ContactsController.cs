@@ -11,137 +11,202 @@ using Chat_App.services;
 
 namespace Chat_App.Controllers
 {
-    public class ContactsController : Controller
+    [ApiController]
+    [Route("api/[controller]")]
+    public class contactsController : Controller
     {
         private readonly IContactService _service;
 
-        public ContactsController(Chat_AppContext context)
+        public contactsController()
         {
             _service = new ContactService();
         }
-
-        // GET: Users
+        
+        [HttpGet]
         public IActionResult Index()
         {
-            return View(_service.GetAll());
+            return Json(_service.GetAll());
         }
 
-        // GET: Users/Details/5
-        public IActionResult Details(int? id)
+        [HttpGet("{id}")]
+        public IActionResult Details(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var contact = _service.Get((int)id);
-
+            var contact = _service.Get(id);
+            
             if (contact == null)
             {
                 return NotFound();
             }
 
-            return View(contact);
+            return Json(contact);
         }
 
-        // GET: Users/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Users/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("Id,Name,NickName,Messages,User")] Contact contact)
+        public IActionResult Create([Bind("Id,Name,Server")] Contact contact)
         {
             if (ModelState.IsValid)
             {
-                _service.Create(contact.Name, contact.NickName, contact.Messages, contact.User);
-                return RedirectToAction(nameof(Index));
+                _service.Create(contact.Id, contact.Name, contact.Server);
+                return Created(String.Format("/api/contact/{0}", contact.Id), contact);
             }
-            return View(contact);
+            return BadRequest();
         }
 
-        // GET: Users/Edit/5
-        public IActionResult Edit(int? id)
+        [HttpPut("{id}")]
+        public IActionResult Edit(string id, [Bind("Name,Server")] Contact contact)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var contact = _service.Get((int)id);
-            if (contact == null)
-            {
-                return NotFound();
-            }
-            return View(contact);
-        }
-
-        // POST: Users/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind("Id,Name,NickName,Messages,User")] Contact contact)
-        {
-            if (id != contact.Id)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _service.Edit(id, contact.Name, contact.NickName, contact.Messages, contact.User);
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    throw;
-                }
-                return RedirectToAction(nameof(Index));
+                if (id == null)
+                    return NotFound();
+                if (_service.Get(id) == null)
+                    return NotFound();
+                _service.Edit(id, contact.Name, contact.Server);
+                return NoContent();
             }
-            return View(contact);
+            return BadRequest();
         }
 
-        // GET: Users/Delete/5
-        public IActionResult Delete(int? id)
+        [HttpDelete("{id}")]
+        public IActionResult DeleteConfirmed(string id)
         {
-            if (id == null)
+            if (_service.Get(id) == null)
             {
                 return NotFound();
             }
-
-            var contact = _service.Get((int)id);
-            if (contact == null)
-            {
-                return NotFound();
-            }
-
-            return View(contact);
-        }
-
-        // POST: Users/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
-        {
-            if (_service.Get((int)id) == null)
-            {
-                return Problem("Entity set 'Chat_AppContext.User'  is null.");
-            }
-            var contact = _service.Get((int)id);
+            var contact = _service.Get(id);
             if (contact != null)
             {
                 _service.Delete(id);
             }
-
-            return RedirectToAction(nameof(Index));
+            return NoContent();
         }
 
+        [HttpGet("{id}/messages")]
+        public IActionResult MessagesDetails(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var contact = _service.Get(id);
+
+            if (contact == null)
+            {
+                return NotFound();
+            }
+
+            return Json(_service.GetAllMessages(id));
+        }
+
+        [HttpGet("{id}/messages/{id2}")]
+        public IActionResult Message(string id, int id2)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var contact = _service.Get(id);
+
+            if (contact == null)
+            {
+                return NotFound();
+            }
+
+            if (id2 == null)
+            {
+                return NotFound();
+            }
+
+            var message = contact.Messages.Find(c => c.Id == id2);
+
+            if (message == null)
+            {
+                return NotFound();
+            }
+            return Json(_service.GetMessage(id, id2));
+        }
+
+        [HttpDelete("{id}/messages/{id2}")]
+        public IActionResult DeleteMessage(string id, int id2)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var contact = _service.Get(id);
+
+            if (contact == null)
+            {
+                return NotFound();
+            }
+
+            if (id2 == null)
+            {
+                return NotFound();
+            }
+
+            _service.DeleteMessage(id, id2);
+            return NoContent();
+        }
+
+        [HttpPost("{id}/messages")]
+        public IActionResult CreateMessage(string id, [Bind("Content")] Message message)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var contact = _service.Get(id);
+
+            if (contact == null)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                int id2 = _service.CreateMessage(id, message.Content);
+                return Created(String.Format("/api/contact/{0}/messages/{0}", id, id2), _service.GetMessage(id, id2));
+            }
+            return BadRequest();
+        }
+
+        [HttpPut("{id}/messages/{id2}")]
+        public IActionResult EditMessage(string id, int id2, [Bind("Content")] Message message)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var contact = _service.Get(id);
+
+            if (contact == null)
+            {
+                return NotFound();
+            }
+
+            if (id2 == null)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                _service.EditMessage(id, id2, message.Content);
+                return NoContent();
+            }
+            return BadRequest();
+        }
     }
 }

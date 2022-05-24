@@ -17,18 +17,22 @@ namespace Chat_App.services
 
         //public Message Search();
 
-        public void Create(string content, DateTime created, string status, Contact contact)
+        public void Create(string content)
         {
             int nextId = 0;
             if (messages.Count > 0)
             {
                 nextId = messages.Max(x => x.Id) + 1;
             }
-            messages.Add(new Message { Id = nextId, Content = content, CreatedDate = created, Status = status, Contact = contact });
+            messages.Add(new Message { Id = nextId, Content = content, Created = DateTime.Now, Sent = true });
         }
 
-        // maybe neccesery
-        //public void Edit(int id, string content, DateTime created, string status, string contact);
+        
+        public void Edit(int id, string content)
+        {
+            Message message = messages.Find(x => x.Id == id);
+            message.Content = content;  
+        }
 
         public void Delete(int id)
         {

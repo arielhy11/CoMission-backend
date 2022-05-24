@@ -43,11 +43,26 @@
 
 //            return View(message);
 //        }
-       
-//        public int Create([Bind("Content")] Message message)
+
+//        // GET: Users/Create
+//        public IActionResult Create()
 //        {
-//                _service.Create(message.Content);
-//                return message.Id;
+//            return View();
+//        }
+
+//        // POST: Users/Create
+//        // To protect from overposting attacks, enable the specific properties you want to bind to.
+//        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+//        [HttpPost]
+//        [ValidateAntiForgeryToken]
+//        public IActionResult Create([Bind("Id,Content,CreatedDate,Status,Contact")] Message message)
+//        {
+//            if (ModelState.IsValid)
+//            {
+//                _service.Create(message.Content, message.Created, message.Status, message.Contact);
+//                return RedirectToAction(nameof(Index));
+//            }
+//            return View(message);
 //        }
 
 //        // GET: Users/Delete/5

@@ -6,11 +6,10 @@
 
         public string Content { get; set; }
 
-        public DateTime CreatedDate { get; set; }
+        public DateTime Created { get; set; }
 
-        // Me or freind
-        public string Status { get; set; }
-
-        public Contact Contact { get; set; }
+        // true or false
+        public Boolean Sent { get; set; }
+       
     }
 }
