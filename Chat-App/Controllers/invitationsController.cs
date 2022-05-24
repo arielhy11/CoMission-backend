@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Chat_App.services;
+using Chat_App.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Chat_App.Controllers
 {
@@ -6,10 +8,22 @@ namespace Chat_App.Controllers
     [Route("api/[controller]")]
     public class invitationsController : Controller
     {
-        [HttpPost]
-        public IActionResult Index()
+        private readonly IInvitationService _service;
+
+        public invitationsController()
         {
-            return View();
+            _service = new InvitationService();
+        }
+
+        [HttpPost]
+        public IActionResult Create([Bind("Id,To,Server")] Invitations invitation)
+        {
+            if (ModelState.IsValid)
+            {
+                _service.Create(invitation.Id, invitation.To, invitation.Server);
+                return NoContent();
+            }
+            return BadRequest();
         }
     }
 }

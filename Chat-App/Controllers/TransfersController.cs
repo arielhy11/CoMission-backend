@@ -8,7 +8,6 @@ namespace Chat_App.Controllers
     [Route("api/[controller]")]
     public class TransfersController : Controller
     {
-
         private readonly ITransferService _service;
 
         public TransfersController()
@@ -17,11 +16,11 @@ namespace Chat_App.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([Bind("Id,Content")] Transfer transfer)
+        public IActionResult Create([Bind("Id,To,Content")] Transfer transfer)
         {
             if (ModelState.IsValid)
             {
-                _service.Create(transfer.Id, transfer.Content);
+                _service.Create(transfer.Id, transfer.To, transfer.Content);
                 return NoContent();
             }
             return BadRequest();
