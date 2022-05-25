@@ -4,7 +4,11 @@ namespace Chat_App.services
 {
     public class UserService : IUserService
     {
-        private static List<User> users = new List<User>();
+        private static List<User> users = new List<User>()
+        {
+            new User{ Id = "Yosef", Password = "1234"}, new User{ Id = "Ariel", Password = "1234"}
+        };
+
         public List<User> GetAll() {
             return users; 
         }

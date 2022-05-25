@@ -23,12 +23,17 @@ namespace Chat_App.services
             foreach (Contact contact in contacts)
                 if(contact.UserName == user)
                     userContacts.Add(contact); 
-            return contacts; 
+            return userContacts; 
         }
 
         public Contact Get(string id)
         {
             return contacts.Find(x => x.Id == id);
+        }
+
+        public Contact UserGet(string user, string id)
+        {
+            return contacts.Find(x => (x.Id == id) && (x.UserName == user));
         }
 
         //public Contact UserGet(string id) 
@@ -52,10 +57,21 @@ namespace Chat_App.services
             contact.Name = name;
             contact.Server = server;
         }
+        public void UserEdit(string user, string id, string name, string server)
+        {
+            Contact contact = UserGet(user, id);
+            contact.Name = name;
+            contact.Server = server;
+        }
 
         public void Delete(string id)
         {
             contacts.Remove(contacts.Find(x => x.Id == id));
+        }
+
+        public void UserDelete(string user, string id)
+        {
+            contacts.Remove(contacts.Find(x => (x.Id == id) && (x.UserName == user)));
         }
 
         public List<Message> GetAllMessages(string id)

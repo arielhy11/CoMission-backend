@@ -34,16 +34,34 @@ namespace Chat_App.Controllers
             return Json(_service.UserGetAll(user));
         }
 
-        [HttpGet("{id}")]
-        public IActionResult Details(string id)
+        //[HttpGet("{id}")]
+        //public IActionResult Details(string id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var contact = _service.Get(id);
+            
+        //    if (contact == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return Json(contact);
+        //}
+
+        [HttpGet("{user}/{id}")]
+        public IActionResult Details(string user, string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var contact = _service.Get(id);
-            
+            var contact = _service.UserGet(user, id);
+
             if (contact == null)
             {
                 return NotFound();
@@ -74,32 +92,62 @@ namespace Chat_App.Controllers
             return BadRequest();
         }
 
-        [HttpPut("{id}")]
-        public IActionResult Edit(string id, [Bind("Name,Server")] Contact contact)
+        //[HttpPut("{id}")]
+        //public IActionResult Edit(string id, [Bind("Name,Server")] Contact contact)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        if (id == null)
+        //            return NotFound();
+        //        if (_service.Get(id) == null)
+        //            return NotFound();
+        //        _service.Edit(id, contact.Name, contact.Server);
+        //        return NoContent();
+        //    }
+        //    return BadRequest();
+        //}
+
+        [HttpPut("{user}/{id}")]
+        public IActionResult Edit(string user, string id, [Bind("Name,Server")] Contact contact)
         {
             if (ModelState.IsValid)
             {
                 if (id == null)
                     return NotFound();
-                if (_service.Get(id) == null)
+                if (_service.UserGet(user, id) == null)
                     return NotFound();
-                _service.Edit(id, contact.Name, contact.Server);
+                _service.UserEdit(user, id, contact.Name, contact.Server);
                 return NoContent();
             }
             return BadRequest();
         }
 
-        [HttpDelete("{id}")]
-        public IActionResult DeleteConfirmed(string id)
+        //[HttpDelete("{id}")]
+        //public IActionResult DeleteConfirmed(string id)
+        //{
+        //    if (_service.Get(id) == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    var contact = _service.Get(id);
+        //    if (contact != null)
+        //    {
+        //        _service.Delete(id);
+        //    }
+        //    return NoContent();
+        //}
+
+        [HttpDelete("{user}/{id}")]
+        public IActionResult DeleteConfirmed(string user, string id)
         {
             if (_service.Get(id) == null)
             {
                 return NotFound();
             }
-            var contact = _service.Get(id);
+            var contact = _service.UserGet(user, id);
             if (contact != null)
             {
-                _service.Delete(id);
+                _service.UserDelete(user, id);
             }
             return NoContent();
         }

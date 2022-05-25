@@ -22,6 +22,12 @@ namespace Chat_App.Controllers
             _service = new UserService();
         }
 
+        [HttpGet]
+        public IActionResult get()
+        {
+            return Json(_service.GetAll());
+        }
+
         [HttpPost]
         public IActionResult LogIn([Bind("Id,Password")] User user)
         {

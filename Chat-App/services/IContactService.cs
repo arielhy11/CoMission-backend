@@ -10,7 +10,7 @@ namespace Chat_App.services
 
         public Contact Get(string id);
 
-        //public Contact UserGet(string id);
+        public Contact UserGet(string user, string id);
 
         public void Create(string id, string name, string server);
 
@@ -18,7 +18,11 @@ namespace Chat_App.services
 
         public void Edit(string id, string name, string server);
 
+        public void UserEdit(string user, string id, string name, string server);
+
         public void Delete(string id);
+
+        public void UserDelete(string user, string id);
 
         public List<Message> GetAllMessages(string id);
 
