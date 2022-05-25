@@ -4,6 +4,6 @@ namespace Chat_App.services
 {
     public interface ITransferService
     {
-        public Message Create(string Id, string To, string Content);
+        public Message Create(string From, string To, string Content);
     }
 }

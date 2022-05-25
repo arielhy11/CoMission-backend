@@ -17,15 +17,21 @@ namespace Chat_App.Controllers
     {
         private readonly IContactService _service;
 
-        public contactsController()
+        public contactsController(ContactService service)
         {
-            _service = new ContactService();
+            _service = service;
         }
         
         [HttpGet]
         public IActionResult Index()
         {
             return Json(_service.GetAll());
+        }
+
+        [HttpGet("{user}")]
+        public IActionResult AllUserContacts(string user)
+        {
+            return Json(_service.UserGetAll(user));
         }
 
         [HttpGet("{id}")]
@@ -52,6 +58,17 @@ namespace Chat_App.Controllers
             if (ModelState.IsValid)
             {
                 _service.Create(contact.Id, contact.Name, contact.Server);
+                return Created(String.Format("/api/contact/{0}", contact.Id), contact);
+            }
+            return BadRequest();
+        }
+
+        [HttpPost("{user}")]
+        public IActionResult UserCreate(string user, [Bind("Id,Name,Server")] Contact contact)
+        {
+            if (ModelState.IsValid)
+            {
+                _service.UserCreate(contact.Id, contact.Name, contact.Server, user);
                 return Created(String.Format("/api/contact/{0}", contact.Id), contact);
             }
             return BadRequest();

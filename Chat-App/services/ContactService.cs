@@ -17,14 +17,33 @@ namespace Chat_App.services
             return contacts;
         }
 
+        public List<Contact> UserGetAll(string user) 
+        {
+            List<Contact> userContacts = new List<Contact>();
+            foreach (Contact contact in contacts)
+                if(contact.UserName == user)
+                    userContacts.Add(contact); 
+            return contacts; 
+        }
+
         public Contact Get(string id)
         {
             return contacts.Find(x => x.Id == id);
         }
 
+        //public Contact UserGet(string id) 
+        //{ 
+        //    return contacts.Find(x => x.Id == id); 
+        //}
+
         public void Create(string id, string name, string server)
         {
-            contacts.Add(new Contact { Id = id, Name = name, Server = server });
+            contacts.Add(new Contact { Id = id, Name = name, Server = server, Messages = new List<Message>() });
+        }
+
+        public void UserCreate(string id, string name, string server, string user) 
+        {
+            contacts.Add(new Contact { Id = id, Name = name, Server = server, Messages = new List<Message>(), UserName = user });
         }
 
         public void Edit(string id, string name, string server)
@@ -61,6 +80,18 @@ namespace Chat_App.services
                 nextId = contact.Messages.Max(x => x.Id) + 1;
             }
             contact.Messages.Add(new Message { Id = nextId, Content = content, Created = DateTime.Now, Sent = true });
+            return nextId;
+        }
+
+        public int CreateMessageFrom(string id, string content)
+        {
+            Contact contact = contacts.Find(x => x.Id == id);
+            int nextId = 0;
+            if (contact.Messages.Count > 0)
+            {
+                nextId = contact.Messages.Max(x => x.Id) + 1;
+            }
+            contact.Messages.Add(new Message { Id = nextId, Content = content, Created = DateTime.Now, Sent = false });
             return nextId;
         }
 

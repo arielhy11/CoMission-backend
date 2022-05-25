@@ -17,7 +17,7 @@ namespace Chat_App.Models
         [JsonIgnore]
         public List<Message> Messages { get; set; }
 
-        [JsonIgnore]
-        public User User { get; set; }
+        //[JsonIgnore]
+        public string UserName { get; set; }
     }
 }

@@ -6,22 +6,34 @@ namespace Chat_App.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class TransfersController : Controller
+    public class TransferController : Controller
     {
-        private readonly ITransferService _service;
+        private readonly IContactService _service;
 
-        public TransfersController()
+        public TransferController(ContactService service)
         {
-            _service = new TransferService();
+            _service = service;
         }
 
         [HttpPost]
-        public IActionResult Create([Bind("Id,To,Content")] Transfer transfer)
+        public IActionResult Create([Bind("From,To,Content")] Transfer transfer)
         {
+            if (transfer.From == null)
+            {
+                return NotFound();
+            }
+
+            var contact = _service.Get(transfer.From);
+
+            if (contact == null)
+            {
+                return NotFound();
+            }
+
             if (ModelState.IsValid)
             {
-                _service.Create(transfer.Id, transfer.To, transfer.Content);
-                return NoContent();
+                int id2 = _service.CreateMessageFrom(transfer.From, transfer.Content);
+                return Created(String.Format("/api/contact/{0}/messages/{0}", transfer.From, id2), _service.GetMessage(transfer.From, id2));
             }
             return BadRequest();
         }

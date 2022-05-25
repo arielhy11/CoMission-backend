@@ -6,13 +6,17 @@ namespace Chat_App.services
     {
         public List<User> GetAll(); 
 
-        public User Get(int id);
+        public User Get(string id);
 
-        public void Create(string userName, string password, List<Contact> contacts);
+        public Boolean LogIn(string id, string password);
 
-        public void Edit(int id, string userName, string password, List<Contact> contacts);
+        public Boolean Register(string id, string password);
 
-        public void Delete(int id);
+        public void Create(string id, string password);
+
+        public void Edit(string id, string password);
+
+        public void Delete(string id);
 
     }
 }

@@ -8,19 +8,24 @@ namespace Chat_App.Controllers
     [Route("api/[controller]")]
     public class invitationsController : Controller
     {
-        private readonly IInvitationService _service;
+        private readonly IContactService _service;
 
-        public invitationsController()
+        public invitationsController(ContactService service)
         {
-            _service = new InvitationService();
+            _service = service;
         }
 
         [HttpPost]
-        public IActionResult Create([Bind("Id,To,Server")] Invitations invitation)
+        public IActionResult Create([Bind("From,To,Server")] Invitations invitation)
         {
+            if (invitation.From == null)
+            {
+                return NotFound();
+            }
+
             if (ModelState.IsValid)
             {
-                _service.Create(invitation.Id, invitation.To, invitation.Server);
+                _service.UserCreate(invitation.From, invitation.From, invitation.Server, invitation.To);
                 return NoContent();
             }
             return BadRequest();

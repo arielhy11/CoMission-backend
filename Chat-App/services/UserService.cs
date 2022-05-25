@@ -9,27 +9,50 @@ namespace Chat_App.services
             return users; 
         }
 
-        public User Get(int id) { 
+        public User Get(string id) { 
             return users.Find(x => x.Id == id);
         }
 
-        public void Create(string name, string password, List<Contact> contacts) {
-            int nextId = 0;
-            if (users.Count > 0)
+        public Boolean LogIn(string id, string password)
+        {
+            var user = Get(id);
+            if (user != null)
             {
-                nextId = users.Max(x => x.Id) + 1;
+                if (user.Password == password)
+                {
+                    return true;
+                }
             }
-            users.Add(new User { Id = nextId, Name = name, Password = password, Contacts = contacts });
+            return false;
         }
 
-        public void Edit(int id, string userName, string password, List<Contact> contacts) {
+        public Boolean Register(string id, string password)
+        {
+            var user = Get(id);
+            if (user != null)
+            {
+                return false;
+            }
+            else
+            {
+                Create(id, password);
+                return true;
+
+            }
+
+        }
+
+        public void Create(string id, string password) {
+            users.Add(new User { Id = id, Password = password });
+        }
+
+        public void Edit(string id, string password) {
             User user = Get(id);
-            user.Name = userName;
+            user.Id = id;
             user.Password = password;
-            user.Contacts = contacts;
         }
 
-        public void Delete(int id) { 
+        public void Delete(string id) { 
             users.Remove(users.Find(x => x.Id == id));
         }
 
