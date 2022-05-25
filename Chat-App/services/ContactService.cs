@@ -89,6 +89,12 @@ namespace Chat_App.services
             return contact.Messages;
         }
 
+        public List<Message> UserGetAllMessages(string user, string id)
+        {
+            Contact contact = contacts.Find(x => (x.Id == id) && (x.UserName == user));
+            return contact.Messages;
+        }
+
         public Message GetMessage(string id, int messageID)
         {
             Contact contact = contacts.Find(x => x.Id == id);

@@ -152,22 +152,40 @@ namespace Chat_App.Controllers
             return NoContent();
         }
 
-        [HttpGet("{id}/messages")]
-        public IActionResult MessagesDetails(string id)
+        //[HttpGet("{id}/messages")]
+        //public IActionResult MessagesDetails(string id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var contact = _service.Get(id);
+
+        //    if (contact == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return Json(_service.GetAllMessages(id));
+        //}
+
+        [HttpGet("{user}/{id}/messages")]
+        public IActionResult MessagesDetails(string user, string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var contact = _service.Get(id);
+            var contact = _service.UserGet(user, id);
 
             if (contact == null)
             {
                 return NotFound();
             }
 
-            return Json(_service.GetAllMessages(id));
+            return Json(_service.UserGetAllMessages(user, id));
         }
 
         [HttpGet("{id}/messages/{id2}")]

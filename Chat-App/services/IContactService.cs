@@ -26,6 +26,8 @@ namespace Chat_App.services
 
         public List<Message> GetAllMessages(string id);
 
+        public List<Message> UserGetAllMessages(string user, string id);
+
         public Message GetMessage(string id, int messageID);
 
         public int CreateMessage(string id, string content);
