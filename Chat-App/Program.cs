@@ -13,6 +13,14 @@ builder.Services.AddDbContext<Chat_AppContext>(options =>
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddCors(options => 
+{
+    options.AddPolicy("Allow All",
+      builder =>
+      {
+          builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+      });
+});
 
 var app = builder.Build();
 
@@ -26,6 +34,8 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.UseCors("Allow All");
 
 app.MapControllerRoute(
     name: "default",
