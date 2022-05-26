@@ -2,8 +2,12 @@
 using Microsoft.Extensions.DependencyInjection;
 using Chat_App.Data;
 using Chat_App.services;
+using ChatApp.Hubs;
+using Microsoft.AspNetCore.Builder;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddSignalR();
 
 builder.Services.AddTransient<ContactService>();
 builder.Services.AddControllers();
@@ -13,12 +17,14 @@ builder.Services.AddDbContext<Chat_AppContext>(options =>
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
 builder.Services.AddCors(options => 
 {
     options.AddPolicy("Allow All",
       builder =>
       {
-          builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+          builder.SetIsOriginAllowed(origin => true).AllowAnyMethod().AllowAnyHeader()
+          .AllowAnyHeader().AllowCredentials();
       });
 });
 
@@ -35,10 +41,17 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+app.MapHub<ChatHub>("/chatHub");
+
 app.UseCors("Allow All");
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Rates}/{action=Search}/{id?}");
+
+//app.UseEndpoints(endpoints =>
+//{
+//    endpoints.MapHub<ChatHub>("/chatHub");
+//});
 
 app.Run();

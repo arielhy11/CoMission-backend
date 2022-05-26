@@ -39,6 +39,10 @@ namespace Chat_App.Controllers
 
         public IActionResult Search(string query)
         {
+            if(query == null) 
+            { 
+                return View(_service.GetAll().ToList()); 
+            }
             var q = from rate in _service.GetAll()
                     where rate.Description.Contains(query)
                     select rate;
