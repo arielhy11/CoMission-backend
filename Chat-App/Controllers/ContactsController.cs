@@ -34,23 +34,6 @@ namespace Chat_App.Controllers
             return Json(_service.UserGetAll(user));
         }
 
-        //[HttpGet("{id}")]
-        //public IActionResult Details(string id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var contact = _service.Get(id);
-            
-        //    if (contact == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return Json(contact);
-        //}
 
         [HttpGet("{user}/{id}")]
         public IActionResult Details(string user, string id)
@@ -92,21 +75,6 @@ namespace Chat_App.Controllers
             return BadRequest();
         }
 
-        //[HttpPut("{id}")]
-        //public IActionResult Edit(string id, [Bind("Name,Server")] Contact contact)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        if (id == null)
-        //            return NotFound();
-        //        if (_service.Get(id) == null)
-        //            return NotFound();
-        //        _service.Edit(id, contact.Name, contact.Server);
-        //        return NoContent();
-        //    }
-        //    return BadRequest();
-        //}
-
         [HttpPut("{user}/{id}")]
         public IActionResult Edit(string user, string id, [Bind("Name,Server")] Contact contact)
         {
@@ -122,20 +90,6 @@ namespace Chat_App.Controllers
             return BadRequest();
         }
 
-        //[HttpDelete("{id}")]
-        //public IActionResult DeleteConfirmed(string id)
-        //{
-        //    if (_service.Get(id) == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    var contact = _service.Get(id);
-        //    if (contact != null)
-        //    {
-        //        _service.Delete(id);
-        //    }
-        //    return NoContent();
-        //}
 
         [HttpDelete("{user}/{id}")]
         public IActionResult DeleteConfirmed(string user, string id)
@@ -151,24 +105,6 @@ namespace Chat_App.Controllers
             }
             return NoContent();
         }
-
-        //[HttpGet("{id}/messages")]
-        //public IActionResult MessagesDetails(string id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var contact = _service.Get(id);
-
-        //    if (contact == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return Json(_service.GetAllMessages(id));
-        //}
 
         [HttpGet("{user}/{id}/messages")]
         public IActionResult MessagesDetails(string user, string id)
@@ -241,28 +177,6 @@ namespace Chat_App.Controllers
             return NoContent();
         }
 
-        //[HttpPost("{id}/messages")]
-        //public IActionResult CreateMessage(string id, [Bind("Content")] Message message)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var contact = _service.Get(id);
-
-        //    if (contact == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    if (ModelState.IsValid)
-        //    {
-        //        int id2 = _service.CreateMessage(id, message.Content);
-        //        return Created(String.Format("/api/contact/{0}/messages/{0}", id, id2), _service.GetMessage(id, id2));
-        //    }
-        //    return BadRequest();
-        //}
 
         [HttpPost("{user}/{id}/messages")]
         public IActionResult CreateMessage(string user, string id, [Bind("Content")] Message message)
