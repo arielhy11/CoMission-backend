@@ -241,15 +241,38 @@ namespace Chat_App.Controllers
             return NoContent();
         }
 
-        [HttpPost("{id}/messages")]
-        public IActionResult CreateMessage(string id, [Bind("Content")] Message message)
+        //[HttpPost("{id}/messages")]
+        //public IActionResult CreateMessage(string id, [Bind("Content")] Message message)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var contact = _service.Get(id);
+
+        //    if (contact == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    if (ModelState.IsValid)
+        //    {
+        //        int id2 = _service.CreateMessage(id, message.Content);
+        //        return Created(String.Format("/api/contact/{0}/messages/{0}", id, id2), _service.GetMessage(id, id2));
+        //    }
+        //    return BadRequest();
+        //}
+
+        [HttpPost("{user}/{id}/messages")]
+        public IActionResult CreateMessage(string user, string id, [Bind("Content")] Message message)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var contact = _service.Get(id);
+            var contact = _service.UserGet(user, id);
 
             if (contact == null)
             {
@@ -258,7 +281,7 @@ namespace Chat_App.Controllers
 
             if (ModelState.IsValid)
             {
-                int id2 = _service.CreateMessage(id, message.Content);
+                int id2 = _service.UserCreateMessage(user, id, message.Content);
                 return Created(String.Format("/api/contact/{0}/messages/{0}", id, id2), _service.GetMessage(id, id2));
             }
             return BadRequest();

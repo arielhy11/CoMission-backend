@@ -32,7 +32,7 @@ namespace Chat_App.Controllers
 
             if (ModelState.IsValid)
             {
-                int id2 = _service.CreateMessageFrom(transfer.From, transfer.Content);
+                int id2 = _service.CreateMessageFrom(transfer.To, transfer.From, transfer.Content);
                 return Created(String.Format("/api/contact/{0}/messages/{0}", transfer.From, id2), _service.GetMessage(transfer.From, id2));
             }
             return BadRequest();

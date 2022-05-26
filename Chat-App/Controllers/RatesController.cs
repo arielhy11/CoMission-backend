@@ -40,7 +40,7 @@ namespace Chat_App.Controllers
         public IActionResult Search(string query)
         {
             var q = from rate in _service.GetAll()
-                    where rate.UserName.Contains(query)
+                    where rate.Description.Contains(query)
                     select rate;
 
             ViewData["Average"] = _service.Average();

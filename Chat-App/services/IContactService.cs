@@ -32,7 +32,9 @@ namespace Chat_App.services
 
         public int CreateMessage(string id, string content);
 
-        public int CreateMessageFrom(string id, string content);
+        public int UserCreateMessage(string user, string id, string content);
+
+        public int CreateMessageFrom(string user, string id, string content);
 
         public void DeleteMessage(string id, int messageID);
 

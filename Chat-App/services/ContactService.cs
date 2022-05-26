@@ -114,9 +114,21 @@ namespace Chat_App.services
             return nextId;
         }
 
-        public int CreateMessageFrom(string id, string content)
+        public int UserCreateMessage(string user, string id, string content)
         {
-            Contact contact = contacts.Find(x => x.Id == id);
+            Contact contact = contacts.Find(x => (x.Id == id) && (x.UserName == user));
+            int nextId = 0;
+            if (contact.Messages.Count > 0)
+            {
+                nextId = contact.Messages.Max(x => x.Id) + 1;
+            }
+            contact.Messages.Add(new Message { Id = nextId, Content = content, Created = DateTime.Now, Sent = true });
+            return nextId;
+        }
+
+        public int CreateMessageFrom(string user, string id, string content)
+        {
+            Contact contact = contacts.Find(x => (x.Id == id) && (x.UserName == user));
             int nextId = 0;
             if (contact.Messages.Count > 0)
             {
