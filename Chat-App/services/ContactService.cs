@@ -5,21 +5,21 @@ namespace Chat_App.services
     public class ContactService : IContactService
     {
         private static List<Contact> contacts = new List<Contact>() {
-                        //new Contact { Id = "yosef", Name = "yossi", UserName = "Ariel", Messages = new List<Message>(){
-                        //    new Message { Id = 0, Content = "hello darkness", Created = DateTime.Now, Sent = true },
-                        //    new Message { Id = 1, Content = "my old freind", Created = DateTime.Now, Sent = true }}},
-                        //new Contact { Id = "ariel", Name = "ari" , UserName = "Ariel", Messages = new List<Message>(){
-                        //    new Message { Id = 0, Content = "how are you", Created = DateTime.Now, Sent = true },
-                        //    new Message { Id = 1, Content = "good", Created = DateTime.Now, Sent = true }} },
-                        //new Contact { Id = "dad", Name = "dad" , UserName = "Ariel", Messages = new List<Message>(){
-                        //    new Message { Id = 0, Content = "hi", Created = DateTime.Now, Sent = true },
-                        //    new Message { Id = 1, Content = "thanks", Created = DateTime.Now, Sent = true }} },
-                        //new Contact { Id = "mom", Name = "mom" , UserName = "Ariel", Messages = new List<Message>(){
-                        //    new Message { Id = 0, Content = "maccabi", Created = DateTime.Now, Sent = true },
-                        //    new Message { Id = 1, Content = "haifa", Created = DateTime.Now, Sent = true }} },
-                        //new Contact { Id = "bob", Name = "bob" , UserName = "Ariel", Messages = new List<Message>(){
-                        //    new Message { Id = 0, Content = "yes", Created = DateTime.Now, Sent = true },
-                        //    new Message { Id = 1, Content = "no", Created = DateTime.Now, Sent = true }} }
+                        new Contact { Id = "yosef", Name = "yossi", UserName = "Ariel", Messages = new List<Message>(){
+                            new Message { Id = 0, Content = "hello darkness", Created = DateTime.Now, Sent = true },
+                            new Message { Id = 1, Content = "my old freind", Created = DateTime.Now, Sent = true }}},
+                        new Contact { Id = "ariel", Name = "ari" , UserName = "Ariel", Messages = new List<Message>(){
+                            new Message { Id = 0, Content = "how are you", Created = DateTime.Now, Sent = true },
+                            new Message { Id = 1, Content = "good", Created = DateTime.Now, Sent = true }} },
+                        new Contact { Id = "dad", Name = "dad" , UserName = "Ariel", Messages = new List<Message>(){
+                            new Message { Id = 0, Content = "hi", Created = DateTime.Now, Sent = true },
+                            new Message { Id = 1, Content = "thanks", Created = DateTime.Now, Sent = true }} },
+                        new Contact { Id = "mom", Name = "mom" , UserName = "Ariel", Messages = new List<Message>(){
+                            new Message { Id = 0, Content = "maccabi", Created = DateTime.Now, Sent = true },
+                            new Message { Id = 1, Content = "haifa", Created = DateTime.Now, Sent = true }} },
+                        new Contact { Id = "bob", Name = "bob" , UserName = "Ariel", Messages = new List<Message>(){
+                            new Message { Id = 0, Content = "yes", Created = DateTime.Now, Sent = true },
+                            new Message { Id = 1, Content = "no", Created = DateTime.Now, Sent = true }} }
                         };
 
         public List<Contact> GetAll()
@@ -45,11 +45,6 @@ namespace Chat_App.services
         {
             return contacts.Find(x => (x.Id == id) && (x.UserName == user));
         }
-
-        //public Contact UserGet(string id) 
-        //{ 
-        //    return contacts.Find(x => x.Id == id); 
-        //}
 
         public void Create(string id, string name, string server)
         {
