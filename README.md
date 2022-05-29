@@ -7,7 +7,12 @@
 כעת יש להיכנס בחשבון הגיט הזה (Yosef-Perelman) לרפוזיטורי react-api (צירפתי אותכם כcollaborator גם אליו. זה בעצם התרגיל הראשון, שעבר התאמה לעבוד מול השרת).
 לאחר שנכנסים צריך לעשות clone לרפוזיטורי לתוך פרויקט בvscode.
 אחרי שעושים clone, צריך בטרמינל לרשום את הפקודה cd react-api כדי להיכנס לתיקיה.
-לאחר מכן יש לרשום את הפקודות npm install ואז npm start ותוכנת הלקוח תעלה.
+לאחר מכן יש לרשום את הפקודות הבאות:
+npm install
+npm install react-router-dom
+npm install react-bootstrap
+npm install @microsoft/signalr
+ואז npm start ותוכנת הלקוח תעלה.
 כעת ניתן להשתמש בה, והיא מסונכרנת עם השרת.
 
 אם יש בעיות בהתקנה אשמח אם תפנו: 
