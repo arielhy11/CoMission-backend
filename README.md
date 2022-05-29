@@ -7,7 +7,7 @@
 כעת יש להיכנס בחשבון הגיט הזה (Yosef-Perelman) לרפוזיטורי react-api (צירפתי אותכם כcollaborator גם אליו. זה בעצם התרגיל הראשון, שעבר התאמה לעבוד מול השרת).
 לאחר שנכנסים צריך לעשות clone לרפוזיטורי לתוך פרויקט בvscode.
 אחרי שעושים clone, צריך בטרמינל לרשום את הפקודה cd react-api כדי להיכנס לתיקיה.
-לאחר מכן יש לרשום את הפקודות הבאות:
+לאחר מכן יש לרשום את הפקודות הבאות: <br />
 npm install <br />
 npm install react-router-dom <br />
 npm install react-bootstrap <br />
