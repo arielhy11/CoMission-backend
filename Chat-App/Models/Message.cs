@@ -6,7 +6,7 @@
 
         public string Content { get; set; }
 
-        public DateTime Created { get; set; }
+        public string Created { get; set; }
 
         // true or false
         public Boolean Sent { get; set; }
