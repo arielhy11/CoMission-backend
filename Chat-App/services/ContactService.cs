@@ -7,7 +7,7 @@ namespace Chat_App.services
         private static List<Contact> contacts = new List<Contact>() {
                         new Contact { Id = "Yosef", Name = "yossi", UserName = "Ariel", Messages = new List<Message>(){
                             new Message { Id = 0, Content = "hello darkness", Created = DateTime.Now, Sent = false },
-                            new Message { Id = 1, Content = "my old freind", Created = DateTime.Now, Sent = true }}},
+                            new Message { Id = 1, Content = "my old friend", Created = DateTime.Now, Sent = true }}},
                         new Contact { Id = "ariel", Name = "ari" , UserName = "Ariel", Messages = new List<Message>(){
                             new Message { Id = 0, Content = "how are you", Created = DateTime.Now.ToString("HH:mm:ss"), Sent = true },
                             new Message { Id = 1, Content = "good", Created = DateTime.Now.ToString("HH:mm:ss"), Sent = true }} },
